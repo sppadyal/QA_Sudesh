@@ -62,4 +62,5 @@ test('create new root asset', async ({ page }) => {
 
   // Action
   await page.getByRole('button', { name: 'Submit' }).click();
+  await page.close();
 });
