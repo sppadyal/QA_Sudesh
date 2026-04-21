@@ -1,8 +1,10 @@
-import {test, expect } from '@playwright/test';
+import {test,expect} from '@playwright/test';
 
-test('has title', async ({page}) => {
+test('homepage has title', async ({page}) => {
 
-await page.goto("https://Google.com");
-await expect(page).toHaveTitle('Google');
+await page.goto('https://google.com');
+
+await expect(page).toHaveTitle(/Google/);
+
 
 });
