@@ -1,10 +1,18 @@
-import {test,expect} from '@playwright/test';
+import { test, expect, devices } from '@playwright/test';
 
-test('homepage has title', async ({page}) => {
+// Define the device profile
+const iPhone = devices['iPhone 13'];
 
-await page.goto('https://google.com');
+test.use({
+  ...iPhone,
+});
 
-await expect(page).toHaveTitle(/Google/);
-
-
+test('mobile menu should be visible on iPhone', async ({ page }) => {
+  await page.goto('https://saucelabs.com/');
+  
+  // Example: Checking for a hamburger menu that only appears on mobile
+  const menuButton = page.getByRole('button', { name: 'Sign up for free' });
+  await expect(menuButton).toBeVisible();
+  
+  await menuButton.click();
 });
