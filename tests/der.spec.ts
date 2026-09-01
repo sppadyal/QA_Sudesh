@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-function reverseString(str: string): string {
-    return str.split('').reverse().join('');
-}
+test('Handle nested iframe', async ({ page }) => {
 
-test('Verify string reversal logic', async ({ page }) => {
-    const name = "Sudesh";
-    const reversed = reverseString(name);
-    
-    console.log(reversed);
-    
-    // It is best practice to add an assertion
-    //expect(reversed).toBe("hsedus");
+  await page.goto(
+    'https://www.w3schools.com/html/tryit.asp?filename=tryhtml_iframe'
+  );
+
+  const outerFrame = page.frameLocator('#iframeResult');
+  const innerFrame = outerFrame.frameLocator('iframe');
+
+    const innerFrameText = await innerFrame.locator('h1').textContent();
+
+    console.log(`Inner frame text: ${innerFrameText?.trim()}`);
+
 });
