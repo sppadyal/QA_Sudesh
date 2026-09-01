@@ -1,32 +1,17 @@
-import { test, expect } from '@playwright/test';
+import {test,expect} from '@playwright/test';
 
-// 1. Your Interface and Function stay the same
-interface Product {
-    name: string;
-    price: number;
-    category: string;
+const users=[
+    {username:'Admin',password:'admin123'},
+    {username:'Bob',password:'padyal'},
+    {username:'Charlie',password:'sudesh'},
+];
+
+for(const user of users){
+    test(`Login test for ${user.username}`,async({page})=>{
+        await page.goto('http://orangehrm-hrm-qa-4.orangehrmlive.com/auth/login');
+        await page.fill('#username',user.username);
+        await page.fill('#password',user.password);
+        await page.click('#login-button');
+        await expect(page.locator('#welcome-message')).toHaveText(`Welcome, ${user.username}!`);
+    });
 }
-
-function getTaxedTotal(price: number, taxRate: number): number {
-    return price + (price * taxRate);
-}
-
-// 2. Wrap your logic in a 'test' block
-test('Calculate and verify MacBook Pro total price', async ({ page }) => {
-    
-    const myLaptop: Product = {
-        name: "MacBook Pro",
-        price: 2499,
-        category: "Electronics"
-    };
-
-    const salesTax: number = 0.08;
-    const finalPrice = getTaxedTotal(myLaptop.price, salesTax);
-
-    // Logging for your visibility in the terminal
-    console.log(`The total for ${myLaptop.name} is $${finalPrice.toFixed(2)}`);
-
-    // 3. Add an assertion (Best practice for automation)
-    // This tells Playwright the test actually passed or failed
-    expect(finalPrice).toBe(2698.92);
-});

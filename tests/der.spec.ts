@@ -1,14 +1,16 @@
-import {test,expect} from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
-function countCharacters(str:string) {
-    let count: {[key: string]: number} = {};
+test('Handle nested iframe', async ({ page }) => {
 
-    for(let char of str){
-        count[char] = (count[char] || 0) + 1;
-    }
+  await page.goto(
+    'https://www.w3schools.com/html/tryit.asp?filename=tryhtml_iframe'
+  );
 
-    return count;
-}
-test('count the occurrences of each character in a string', () => {
-    console.log(countCharacters("hello"));
+  const outerFrame = page.frameLocator('#iframeResult');
+  const innerFrame = outerFrame.frameLocator('iframe');
+
+    const innerFrameText = await innerFrame.locator('h1').textContent();
+
+    console.log(`Inner frame text: ${innerFrameText?.trim()}`);
+
 });
